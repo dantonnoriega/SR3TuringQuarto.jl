@@ -8,5 +8,5 @@ do
   echo $f
   o=$(basename "$f")
   quarto render "$f" --to html
-  mv "${f/%qmd/html}" "docs/$o"
+  mv "${f/%qmd/html}" "docs/${o/%qmd/html}"
 done
