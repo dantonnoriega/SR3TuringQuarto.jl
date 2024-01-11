@@ -1,0 +1,92 @@
+---
+title: Chapter 2 – Small Worlds and Large Worlds
+format: html
+---
+
+*Set-up*
+
+```{julia}
+using Plots
+using DataFrames
+default(labels=false)
+```
+
+**Code 2.1**
+
+```{julia}
+sample = ["W","L","W","W","W","L","W","L","W"]
+W = sum(sample .== "W")
+L = sum(sample .== "L")
+p = collect(0:0.25:1) # proportions W
+ways = map( x -> (x*4)^W * ((1-x)*4)^L, p)
+prob = ways ./ sum(ways)
+hcat(p, ways, prob)
+```
+
+**Code 2.2**
+```{julia}
+bar(p, prob, bar_color=:blue, xlabel="proportion water", ylabel="probability", legend=false)
+```
+
+**Code 2.3**
+```{julia}
+sample = ["W","L","W","W","W","L","W","L","W"]
+W = sum(sample .== "W")
+L = sum(sample .== "L")
+poss = collect(0:0.25:1) # proportions W
+ways = map( x -> (x)^W * (1-x)^L, poss)
+post = ways ./ sum(ways)
+hcat(poss, ways, post)
+```
+
+**Code 2.4**
+```{julia}
+function compute_posterior( the_sample , poss )
+  W = sum(the_sample .== "W")
+  L = sum(the_sample .== "L")
+  ways = map( x -> (x)^W * (1-x)^L, poss)
+  post = ways ./ sum(ways)
+  DataFrame(
+    poss=poss, 
+    ways=ways, 
+    post=round.(post, digits=3))
+end
+```
+
+**Code 2.5**
+```{julia}
+the_sample = ["W","L","W","W","W","L","W","L","W"]
+the_possibilities = collect(0:0.25:1)
+compute_posterior( the_sample , the_possibilities )
+```
+
+**Code 2.6**
+```{julia}
+collect(range(0,1, length=11))
+```
+
+**COde 2.7**
+```{julia}
+the_possibilities = collect(range(0,1, length=11))
+compute_posterior( the_sample, the_possibilities)
+```
+
+```{julia}
+# 10 sided die
+poss = collect(range(0, 1 , length=11))
+post = compute_posterior( the_sample , poss)
+plot1 = bar(
+  poss, post.post, fillcolor=:steelblue, legend=false, ylim=(0,0.3),
+  xlabel="proportion water", ylabel="probability", 
+  title=string(length(poss), " possibilities"))
+
+# 20 sided die
+poss = collect(range(0 , 1, length=20+1))
+post = compute_posterior( the_sample , poss)
+plot2 = bar(
+  poss, post.post, fillcolor=:tomato, legend=false, ylim=(0,0.3),
+  xlabel="proportion water", ylabel="probability", 
+  title=string(length(poss), " possibilities"))
+
+plot(plot1, plot2, layout=(1,2))
+```

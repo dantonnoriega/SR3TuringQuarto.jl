@@ -1,1 +1,6 @@
 .vscode
+*_files/
+*.log
+*.tex
+/.quarto/
+notebooks/*.html
