@@ -4,9 +4,28 @@ This repo attempts to reproduce the R code in the upcoming 3rd edition of the "S
 
 Code was originally inspired (and ported) from repo [StatisticalRethinkingJulia/SR2TuringJupyter.jl](https://github.com/StatisticalRethinkingJulia/SR2TuringJupyter.jl).
 
-## Run Requirements - Quarto
+## Run Requirements
 
-For MacOS using brew
+### Julia
+
+Installed on macOS using brew
+```sh
+# install julia
+brew install --cask julia
+```
+
+Once installed, confirm necessary packages
+
+```julia
+import Pkg
+# this list of dependencies might be incomplete, as I'm not maintaining it.
+# please check Project.toml for the full list
+Pkg.add(["Turing", "CSV", "DataFrames", "Plots", "StatsPlots"])
+```
+
+### Quarto
+
+For macOS using brew
 
 ```sh
 # install quarto
