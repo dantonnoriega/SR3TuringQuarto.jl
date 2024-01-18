@@ -7,16 +7,23 @@ format: html
 
 ```{julia}
 using Plots
+using StatsPlots
+using StatsBase
 using DataFrames
-default(labels=false)
+using Distributions
+
+default(
+  labels=false, fontfamily="sans-serif", titlefontsize=10, labelfontsize=8,
+  legendfontsize=5, color=:steelblue2, bar_color=:steelblue2)
 ```
+
 
 **Code 2.1**
 
 ```{julia}
-sample = ["W","L","W","W","W","L","W","L","W"]
-W = sum(sample .== "W")
-L = sum(sample .== "L")
+samp = ["W","L","W","W","W","L","W","L","W"]
+W = sum(samp .== "W")
+L = sum(samp .== "L")
 p = collect(0:0.25:1) # proportions W
 ways = map( x -> (x*4)^W * ((1-x)*4)^L, p)
 prob = ways ./ sum(ways)
@@ -25,14 +32,14 @@ hcat(p, ways, prob)
 
 **Code 2.2**
 ```{julia}
-bar(p, prob, bar_color=:blue, xlabel="proportion water", ylabel="probability", legend=false)
+bar(p, prob, xlabel="proportion water", ylabel="probability", legend=false)
 ```
 
 **Code 2.3**
 ```{julia}
-sample = ["W","L","W","W","W","L","W","L","W"]
-W = sum(sample .== "W")
-L = sum(sample .== "L")
+samp = ["W","L","W","W","W","L","W","L","W"]
+W = sum(samp .== "W")
+L = sum(samp .== "L")
 poss = collect(0:0.25:1) # proportions W
 ways = map( x -> (x)^W * (1-x)^L, poss)
 post = ways ./ sum(ways)
@@ -65,28 +72,247 @@ compute_posterior( the_sample , the_possibilities )
 collect(range(0,1, length=11))
 ```
 
-**COde 2.7**
+**Code 2.7**
 ```{julia}
 the_possibilities = collect(range(0,1, length=11))
 compute_posterior( the_sample, the_possibilities)
 ```
 
+**Code 2.8**
 ```{julia}
 # 10 sided die
-poss = collect(range(0, 1 , length=11))
-post = compute_posterior( the_sample , poss)
-plot1 = bar(
-  poss, post.post, fillcolor=:steelblue, legend=false, ylim=(0,0.3),
-  xlabel="proportion water", ylabel="probability", 
-  title=string(length(poss), " possibilities"))
+the_possibilities = collect(range(0, 1 , length=10+1))
+post = compute_posterior( the_sample , the_possibilities)
+fig2_6_left = bar(
+  the_possibilities, post.post, fillcolor=:steelblue2, legend=false, ylim=(0,0.3),
+  xlabel="proportion water", ylabel="probability",
+  title=string(length(the_possibilities), " possibilities"))
 
+## NOT IN BOOK -- Reproduce Fig 2.6
 # 20 sided die
-poss = collect(range(0 , 1, length=20+1))
-post = compute_posterior( the_sample , poss)
-plot2 = bar(
-  poss, post.post, fillcolor=:tomato, legend=false, ylim=(0,0.3),
+the_possibilities = collect(range(0 , 1, length=20+1))
+post = compute_posterior( the_sample , the_possibilities)
+fig2_6_right = bar(
+  the_possibilities, post.post, fillcolor=:tomato, legend=false, ylim=(0,0.3),
   xlabel="proportion water", ylabel="probability", 
-  title=string(length(poss), " possibilities"))
+  title=string(length(the_possibilities), " possibilities"))
 
-plot(plot1, plot2, layout=(1,2))
+display(plot(fig2_6_left, fig2_6_right, layout=(1,2), size = (600,300), linecolor=nothing))
 ```
+
+**Code 2.9**
+
+```{julia}
+
+function compute_posterior2(p, the_sample, the_prior)
+    W = sum(the_sample .== "W")
+    L = sum(the_sample .== "L")
+    W_prior = sum(the_prior .== "W")
+    L_prior = sum(the_prior .== "L")
+    pdf(Beta(W + W_prior + 1, L + L_prior + 1), p)
+end
+
+# Sample data
+the_sample = ["W","L","W","W","W","L","W","L","W"]
+
+# Generate a vector of x values
+x = 0:0.01:1
+
+# Single Plot (bottom left of fig 2.7)
+post = compute_posterior2(x, the_sample, [])
+plot(
+      x, y=post, linewidth=2,
+      xlabel="", ylabel="", yticks = [],
+      legend=:outertop, legendfontsize=8, 
+      legendforegroundcolor=nothing,
+      legendbackgroundcolor=nothing,
+    )
+
+## NOT IN BOOK -- Reproduce Fig 2.7
+
+# Create a 3x3 array to store individual plots
+n = length(the_sample)
+plots = Plots.Plot[plot(title="Plot $i") for i in 1:n]
+
+# iterate through the sample one at a time, keeping a vector prior obs
+for i in 1:n
+    the_prior = the_sample[1:(i-1)]
+    y_post = compute_posterior2(x, the_sample[1:i], the_prior)
+    y_prior = compute_posterior2(x, the_sample[1:i-1], the_prior[1:i-2])
+    label = join(the_sample[1:i], " ")
+    col = the_sample[i] == "W" ? :steelblue2 : :tomato
+    p = plot(
+      x, y_post, color=col, linewidth=2,
+      label=label, xlabel="", ylabel="", yticks = [],
+      legend=:outertop, legendfontsize=8, 
+      legendforegroundcolor=nothing,
+      legendbackgroundcolor=nothing,
+    )
+    plots[i] = plot!(
+      p, x, y_prior, color = :black, linestyle = :dash, linewidth=1.5)
+end
+
+# Splat (...) `plots` into a single 3x3 grid plot (fig2_7)
+fig2_7 = plot(plots..., layout=(3,3), size = (600,600));
+display(fig2_7)
+
+```
+
+**Code 2.10**
+
+```{julia}
+post_samples = rand(Beta(6+1, 3+1), 1000);
+```
+
+**Code 2.11**
+```{julia}
+density(post_samples, linewidth=3, linecolor=:tomato,
+  xlabel="proportion water", label="Density")
+
+# Overlay the beta distribution curve
+x_values = 0:0.01:1
+y_values = pdf(Beta(6 + 1, 3 + 1), x_values)
+plot!(x_values, y_values, linestyle=:dash, linewidth=3, color=:black,
+  label="Beta(7, 4)")
+```
+
+**Code 2.12**
+```{julia}
+density(post_samples, linewidth=3, linecolor=:tomato,
+  bandwidth=.005, # smaller bandwith -> more wiggly
+  xlabel="proportion water", label="Density", title="Wiggle Wiggle")
+
+# Overlay the beta distribution curve
+x_values = 0:0.01:1
+y_values = pdf(Beta(6 + 1, 3 + 1), x_values)
+plot!(x_values, y_values, linestyle=:dash, linewidth=3, color=:black,
+  label="Beta(7, 4)")
+```
+
+**Code 2.13**
+
+Need to define the `precis` function.
+
+Hacked from `precis.jl` in [`StatisticalRethinking.jl](https://github.com/StatisticalRethinkingJulia/StatisticalRethinking.jl/blob/master/src/precis.jl)
+
+```{julia}
+using StatsBase: Histogram
+using Statistics: quantile
+using PrettyTables: pretty_table
+
+const BARS = collect("▁▂▃▄▅▆▇█")
+
+function unicode_histogram(data, nbins = 12)
+    # @show data
+    f = fit(Histogram, data, nbins = nbins)  # nbins: more like a guideline than a rule, really
+    # scale weights between 1 and 8 (length(BARS)) to fit the indices in BARS
+    # eps is needed so indices are in the interval [0, 8) instead of [0, 8] which could
+    # result in indices 0:8 which breaks things
+    scaled = f.weights .* (length(BARS) / maximum(f.weights) - eps())
+    indices = floor.(Int, scaled) .+ 1
+    return join((BARS[i] for i in indices))
+end
+
+function precis(x; digits = 4, a = 0.11)
+    d = DataFrame()
+    df = isa(x, DataFrame) ? x : DataFrame( x = x )
+    cols = collect.(skipmissing.(eachcol(df)))
+    d.param = names(df)
+    d.mean = mean.(cols)
+    d.std = std.(cols)
+    quants = quantile.(cols, ([a/2, 0.5, 1-a/2], ))
+    quants = hcat(quants...)
+    d[:, "5.5%"] = quants[1,:]
+    d[:, "50%"] = quants[2,:]
+    d[:, "94.5%"] = quants[3,:]
+    d.histogram = unicode_histogram.(cols, min(size(df, 1), 12))
+
+    for col in ["mean", "std", "5.5%", "50%", "94.5%"]
+        d[:, col] .= round.(d[:, col], digits = digits)
+    end
+
+    display(pretty_table(d))
+end
+
+```
+
+
+```{julia}
+precis( post_samples )
+```
+
+**Code 2.14**
+
+```{julia}
+density(post_samples, linewidth=3, linecolor=:tomato,
+  bandwidth=.005, # smaller bandwith -> more wiggly
+  xlabel="proportion water", label="Density")
+
+# Overlay the beta distribution curve
+x_values = 0:0.01:1
+y_values = pdf(Beta(6 + 1, 3 + 1), x_values)
+plot!(x_values, y_values, linestyle=:dash, linewidth=3, color=:black,
+  label="Beta(7, 4)")
+pp = [.4, .64, .84]
+bb = pdf(Beta(7,4), p)
+bar!(pp, bb, bar_width=.005, fillcolor=:black, linecolor=nothing)
+```
+
+**Code 2.15**
+
+```{julia}
+sample(["W", "L"], AnalyticWeights([.7,.3]), 9, replace=true)
+```
+
+**Code 2.16**
+
+```{julia}
+function sim_globe(p = 0.7, N = 9)
+  sample(["W", "L"], AnalyticWeights([p,1-p]), N, replace=true)
+end
+```
+
+**Code 2.17**
+
+```{julia}
+sim_globe(0.1, 10)
+```
+
+**Code 2.18**
+
+```{julia}
+pred_01 = [ sum(sim_globe(0.1, 10) .== "W") for _ in 1:10000 ];
+```
+
+**Code 2.19**
+
+```{julia}
+bar( sort( countmap( pred_01 ) ), linecolor=nothing, bar_width=.25,
+     xlabel="number of W", ylabel="count", title="p=0.1")
+```
+
+```{julia}
+# NOT IN BOOK -- Add additional Plots
+pred_25 = [ sum(sim_globe(0.25, 10) .== "W") for _ in 1:10000 ]
+pred_60 = [ sum(sim_globe(0.6, 10) .== "W") for _ in 1:10000 ]
+plot1 = bar( sort( countmap( pred_25 ) ), 
+      linecolor=nothing, bar_width=.25, title="p=0.25")
+plot2 = bar( sort( countmap( pred_60 ) ), 
+      linecolor=nothing, bar_width=.25, title="p=0.6")
+plot(plot1, plot2, layout=(1,2), xlabel="number of W", ylabel="count" )
+```
+
+**Code 2.20**
+
+```{julia}
+p = .64
+pred_64 = [ sum(sim_globe(0.64, 10) .== "W") for _ in 1:10000 ];
+bar( sort( countmap( pred_64 ) ), fillcolor=:black, linecolor=nothing, bar_width=.25,
+     xlabel="number of W", ylabel="count", title="p=0.64")
+
+post_samples = rand(Beta(6+1, 3+1), 10000);
+pred_post = [ sum( sim_globe(p, 10) .== "W" ) for p in post_samples];
+tab_post = sort(countmap(pred_post));
+bar!( tab_post, fillcolor=:steelblue2, linecolor=nothing, bar_width=.125)
+```
+

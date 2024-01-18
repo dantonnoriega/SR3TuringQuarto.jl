@@ -1,7 +1,7 @@
 # Statistical Rethinking (3rd edition) with Julia
 
 Here is the port of code examples from amazing [Statistical Rethinking book](https://xcelab.net/rm/statistical-rethinking/) 
-to [Julia programming language](https://julialang.org/).
+to the [Julia programming language](https://julialang.org/).
 
 [Turing](https://turing.ml/stable/) is used for Bayesian modeling and [Julia Plots](https://docs.juliaplots.org/latest/) for graphics.
 
