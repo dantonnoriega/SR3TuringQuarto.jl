@@ -118,7 +118,7 @@ the_sample = ["W","L","W","W","W","L","W","L","W"]
 # Generate a vector of x values
 x = 0:0.01:1
 
-# Single Plot (bottom left of fig 2.7)
+# Single Plot (bottom right of fig 2.7)
 post = compute_posterior2(x, the_sample, [])
 plot(
       x, y=post, linewidth=2,
