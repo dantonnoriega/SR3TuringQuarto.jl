@@ -316,3 +316,15 @@ tab_post = sort(countmap(pred_post));
 bar!( tab_post, fillcolor=:steelblue2, linecolor=nothing, bar_width=.125)
 ```
 
+**Code 2.21**
+
+```{julia}
+function sim_globe2( p=0.7, N=9 , x=0.1 )
+  true_sample = sample(["W", "L"], AnalyticWeights([p,1-p]), N, replace=true)
+  obs_sample = ifelse.(
+    rand(Uniform(), N) .< x ,
+    ifelse.( true_sample .== "W" , ["L"] , ["W"]),
+    true_sample)
+  obs_sample
+end
+```

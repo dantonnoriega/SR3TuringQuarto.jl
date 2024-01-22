@@ -72,6 +72,6 @@ After satisfying the **Run Requirements** above, you should be able to run the Q
 
     ``` julia
     ## hit "]" to enter Pkg REPL (https://pkgdocs.julialang.org/v1/getting-started/#Basic-Usage)
-    activate
+    activate .
     instantiate
     ```
