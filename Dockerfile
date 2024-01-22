@@ -46,12 +46,3 @@ RUN apt-get update && \
     jupyter && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-# Install code-server for ARM64
-RUN curl -fsSL https://code-server.dev/install.sh | ARCH=arm64 sh
-
-# Install VS Code extensions
-RUN code-server --install-extension julialang.language-julia
-RUN code-server --install-extension yzhang.markdown-all-in-one
-RUN code-server --install-extension quarto.quarto
-RUN code-server --install-extension george-alisson.html-preview-vscode
