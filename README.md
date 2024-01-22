@@ -8,9 +8,48 @@ Code was originally inspired (and ported) from repo [StatisticalRethinkingJulia/
 
 ## Run Requirements
 
+It is recommended to use Docker. It ensure reproducibility.
+
+If you prefer to install locally, [skip down](#local).
+
+### Docker
+
+Clone this repo (`dantonnoriega/SR3TuringQuarto.jl.git`)
+
+``` sh
+## clone and enter project directory
+git clone git@github.com:dantonnoriega/SR3TuringQuarto.jl.git
+cd SR3TuringQuarto.jl
+```
+
+After cloning, you have two options:
+
+1.  Run directly in VS Code via command [`Dev Containers: Open Folder in Container...`](https://code.visualstudio.com/docs/devcontainers/containers#_quick-start-open-an-existing-folder-in-a-container)
+2.  Spin up your own container then attach VS Code via command [`Dev Containers: Attach to Running Container...`](https://code.visualstudio.com/docs/devcontainers/attach-container)
+
+#### (1) `Dev Containers: Open Folder in Container...`
+
+Start up Docker, open the Command Palette (`F1`) in VS Code and run `Dev Containers: Open Folder in Container...`.
+
+That should be it!
+
+#### (2) `Dev Containers: Attach to Running Container...`
+
+Start up Docker, then pull image `dantonnoriega/sr3-turing-quarto-jl` then run
+
+``` sh
+docker pull dantonnoriega/sr3-turing-quarto-jl
+# assumes one is currently in ../SR3TuringQuarto.jl
+docker run --rm -d -it -v $(pwd):/workspace/SR3TuringQuarto.jl dantonnoriega/sr3-turing-quarto-jl
+```
+
+One can then load up VS Code and attach to the running container (Command: `Dev Container: Attach to Running Container...`).
+
+### Local {#local}
+
 To run the code in this repo, you need to have `julia` and `quarto` installed.
 
-### Julia
+#### Julia
 
 `julia` can be easily installed on macOS using brew
 
@@ -19,7 +58,7 @@ To run the code in this repo, you need to have `julia` and `quarto` installed.
 brew install --cask julia
 ```
 
-### Quarto
+#### Quarto
 
 For macOS using brew
 
@@ -41,7 +80,7 @@ python3 -m pip install jupyter
 quarto install tinytex
 ```
 
-## Running Quarto + Julia Notebooks Locally (Clone, Activate, & Instantiate)
+#### Running Quarto + Julia Notebooks Locally (Clone, Activate, & Instantiate)
 
 After satisfying the **Run Requirements** above, you should be able to run the Quarto `*.qmd` files in `notesbooks/` locally.
 

@@ -1,0 +1,13 @@
+{
+  "image": "dantonnoriega/sr3-turing-quarto-jl",
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": ["julialang.language-julia",
+											"yzhang.markdown-all-in-one",
+											"quarto.quarto",
+											"george-alisson.html-preview-vscode"]
+    }
+  }
+}
