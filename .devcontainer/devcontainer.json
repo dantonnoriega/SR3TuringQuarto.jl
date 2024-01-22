@@ -4,11 +4,12 @@
     // Configure properties specific to VS Code.
     "vscode": {
       // Add the IDs of extensions you want installed when the container is created.
-      "extensions": ["julialang.language-julia",
-											"yzhang.markdown-all-in-one",
-											"quarto.quarto",
-                      "ms-azuretools.vscode-docker",
-											"george-alisson.html-preview-vscode"]
+      "extensions": [
+        "julialang.language-julia",
+        "yzhang.markdown-all-in-one",
+        "quarto.quarto",
+        "ms-azuretools.vscode-docker",
+        "george-alisson.html-preview-vscode"]
     }
   }
 }
