@@ -49,7 +49,7 @@ docker run --rm -d -it -v $(pwd):/workspace/SR3TuringQuarto.jl dantonnoriega/sr3
 
 One can then load up VS Code and attach to the running container (Command: `Dev Container: Attach to Running Container...`).
 
-### Local {#local}
+### Local
 
 To run the code in this repo, you need to have `julia` and `quarto` installed.
 
