@@ -5,4 +5,4 @@
 /.quarto/
 notebooks/*.html
 /_site/
-homework/*.pdf
+homework/stat_rethinking_2024_pdfs/*
