@@ -42,6 +42,7 @@ RUN rm /workspace/quarto-1.4.549-linux-arm64.deb
 RUN apt-get update && \
     apt-get install -y python3 \
     python3-pip \
+    python3-yaml \
     jupyter-notebook \
     jupyter && \
     apt-get clean && \
