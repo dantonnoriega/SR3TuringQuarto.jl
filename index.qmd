@@ -1,11 +1,5 @@
 ---
 title: "Statistical Rethinking (3rd edition) with Julia"
-about:
-  links:
-    - icon: github
-      text: Github
-      href: https://github.com/dantonnoriega/SR3TuringQuarto.jl
-
 ---
 
 Here my attempt to port the R code blocks from the draft 3rd edition of Richard McElreath's amazing book, [Statistical Rethinking](https://xcelab.net/rm/statistical-rethinking/), to the [Julia programming language](https://julialang.org/).
@@ -19,5 +13,5 @@ Here my attempt to port the R code blocks from the draft 3rd edition of Richard 
 
 More chapters to come; updated most Wednesdays nights.
 
--   [Chapter 2. Small Worlds and Large World](02-Chapter%202.%20Small%20Worlds%20and%20Large%20Worlds.html)
+-   [Chapter 2. Small Worlds and Large World](notebooks/Chapter%2002%20-%20Small%20Worlds%20and%20Large%20Worlds.html)
 

@@ -1,6 +1,7 @@
 ---
 title: Chapter 2 – Small Worlds and Large Worlds
-format: html
+author: "Danton Noriega-Goodwin"
+date: 2024-01-25
 ---
 
 *Set-up*

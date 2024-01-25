@@ -1,12 +1,9 @@
 project:
   type: website
-  resources:
-    - "css/"
-    - "js/"
-    - "*.html"
   output-dir: docs
   render:
-    - "notebooks/*.qmd"
+    - "!homework/*"
+    - "*.qmd"
 
 website:
   title: "SR3TuringQuarto.jl"

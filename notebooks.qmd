@@ -2,6 +2,10 @@
 title: "Notebooks"
 listing:
   type: default
+  sort: "date desc"
+  sort-ui: [title, date]
+  filter-ui: true
+  fields: [title]
   contents:
     - "notebooks/*.qmd"
 ---
