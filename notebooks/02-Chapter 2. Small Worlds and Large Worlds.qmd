@@ -7,6 +7,7 @@ format: html
 
 ```{julia}
 using Plots
+using Colors
 using StatsPlots
 using StatsBase
 using DataFrames
@@ -327,4 +328,91 @@ function sim_globe2( p=0.7, N=9 , x=0.1 )
     true_sample)
   obs_sample
 end
+```
+
+
+**Code 2.22**
+
+```{julia}
+# code for the normalizing constant
+function ibeta( x , a , b ) 
+  # (R => julia)
+  ## pbeta(x, a, b) => cdf(Beta(a,b), x)
+  ## pbeta(x, a, b, log.p = TRUE) => log(cdf(Beta(a,b), x))
+  ## lbeta(a,b) => logbeta(a,b)
+  exp( log(cdf(Beta(a, b), x)) + logbeta(a,b) )
+end
+
+function Z( x, W , L )
+  ( ibeta( 1-x , L+1, W+1 ) - ibeta( x , L+1, W+1 ) ) / ( 1-2*x )
+end
+
+# data
+W = 6
+L = 3
+
+x_values = 0:0.01:1
+y_values = pdf(Beta(W + 1, L + 1), x_values)
+plot(x_values, y_values, linewidth=3, color=:black,
+  label="Beta(7, 4)", xlabel = "proportion of water",
+  ylabel="posterior probability")
+# new misclassification posterior
+xe = 0.1
+# there is no `curve` function so we generate a function and broadcast
+function misclass_post( x , xe , W , L )
+  (1/Z(xe,W,L)) * (x*(1-xe)+(1-x)*xe)^W * ((1-x)*(1-xe)+x*xe)^L
+end
+y_values = misclass_post.(x_values, xe, W, L)
+plot!(x_values, y_values, linewidth=3, color=:red)
+```
+
+**Code 2.23**
+
+```{julia}
+
+function misclass_post( x , xe , W , L )
+  (1/Z(xe,W,L)) * (x*(1-xe)+(1-x)*xe)^W * ((1-x)*(1-xe)+x*xe)^L
+end
+
+# port function `rethinking::grau()`
+function grau(alpha=0.5)
+  # http://juliagraphics.github.io/Colors.jl/stable/constructionandconversion/#Color-Parsing
+  coloralpha(colorant"black", alpha)
+end
+
+function plot_sim( p , N, xe )
+  sim_sample = sim_globe2( p , N , xe);
+  W = sum(sim_sample .== "W")
+  L = sum(sim_sample .== "L")
+  #
+  x_values = 0:0.01:1
+  y_values = pdf(Beta(W + 1, L + 1), x_values)
+  #
+  plot(x_values, y_values, linewidth=2, color=:black)
+  # new misclassification posterior
+  y_values = misclass_post.(x_values, xe, W, L)
+  vline!([0.7], color=grau(), linewidth=1)
+  plot!(x_values, y_values, linewidth=2, color=:red)
+  xlims!(.5, .85) # zoom in to make the subplots cleaner
+end
+
+# repeat the function a few times. observe how the new posterior, 
+## which accounts for misclassification, is consistently closer to true p.
+plots = Plots.Plot[plot() for i in 1:9];
+
+# iterate through the sample one at a time, keeping a vector prior obs
+p = 0.7
+N = Int(1e3)
+xe = 0.2
+for i in 1:n
+    plots[i] = plot_sim(p,N,xe)
+    if i == 1
+      plot!(xlabel = "proportion of water", ylabel="posterior probability")
+    elseif mod(i-1,3) != 0
+      plot!(yticks = [])
+    end
+end
+
+# Splat (...) `plots` into a single 3x3 grid plot (fig2_7)
+plot(plots..., layout=(3,3), size = (600,600), plot_title = "Ignores Missclassification (black) vs Accounts (red)", plot_titlefontsize=10)
 ```
