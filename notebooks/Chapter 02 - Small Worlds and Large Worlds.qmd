@@ -161,7 +161,7 @@ for i in 1:n
 end
 
 # Splat (...) `plots` into a single 3x3 grid plot (fig2_7)
-fig2_7 = plot(plots..., layout=(3,3), size = (600,600));
+fig2_7 = plot(plots..., layout=(3,3), size = (700,700));
 display(fig2_7)
 
 ```
@@ -421,5 +421,5 @@ for i in 1:n
 end
 
 # Splat (...) `plots` into a single 3x3 grid plot (fig2_7)
-plot(plots..., layout=(3,3), size = (600,600), plot_title = "Ignores Missclassification (black) vs Accounts (red)", plot_titlefontsize=10)
+plot(plots..., layout=(3,3), size = (700,700), plot_title = "Ignores Missclassification (black) vs Accounts (red)", plot_titlefontsize=10)
 ```
