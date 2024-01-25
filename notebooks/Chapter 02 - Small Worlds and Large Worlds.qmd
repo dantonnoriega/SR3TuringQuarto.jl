@@ -4,8 +4,6 @@ author: "Danton Noriega-Goodwin"
 date: 2024-01-25
 ---
 
-*Set-up*
-
 ```{julia}
 using Plots
 using Colors
@@ -21,7 +19,7 @@ default(
 ```
 
 
-**Code 2.1**
+### Code 2.1 
 
 ```{julia}
 samp = ["W","L","W","W","W","L","W","L","W"]
@@ -33,12 +31,14 @@ prob = ways ./ sum(ways)
 hcat(p, ways, prob)
 ```
 
-**Code 2.2**
+### Code 2.2 
+
 ```{julia}
 bar(p, prob, xlabel="proportion water", ylabel="probability", legend=false)
 ```
 
-**Code 2.3**
+### Code 2.3 
+
 ```{julia}
 samp = ["W","L","W","W","W","L","W","L","W"]
 W = sum(samp .== "W")
@@ -49,7 +49,8 @@ post = ways ./ sum(ways)
 hcat(poss, ways, post)
 ```
 
-**Code 2.4**
+### Code 2.4 
+
 ```{julia}
 function compute_posterior( the_sample , poss )
   W = sum(the_sample .== "W")
@@ -63,25 +64,29 @@ function compute_posterior( the_sample , poss )
 end
 ```
 
-**Code 2.5**
+### Code 2.5 
+
 ```{julia}
 the_sample = ["W","L","W","W","W","L","W","L","W"]
 the_possibilities = collect(0:0.25:1)
 compute_posterior( the_sample , the_possibilities )
 ```
 
-**Code 2.6**
+### Code 2.6 
+
 ```{julia}
 collect(range(0,1, length=11))
 ```
 
-**Code 2.7**
+### Code 2.7 
+
 ```{julia}
 the_possibilities = collect(range(0,1, length=11))
 compute_posterior( the_sample, the_possibilities)
 ```
 
-**Code 2.8**
+### Code 2.8 
+
 ```{julia}
 # 10 sided die
 the_possibilities = collect(range(0, 1 , length=10+1))
@@ -103,7 +108,7 @@ fig2_6_right = bar(
 display(plot(fig2_6_left, fig2_6_right, layout=(1,2), size = (600,300), linecolor=nothing))
 ```
 
-**Code 2.9**
+### Code 2.9 
 
 ```{julia}
 
@@ -161,13 +166,13 @@ display(fig2_7)
 
 ```
 
-**Code 2.10**
+### Code 2.10 
 
 ```{julia}
 post_samples = rand(Beta(6+1, 3+1), 1000);
 ```
 
-**Code 2.11**
+### Code 2.11 
 ```{julia}
 density(post_samples, linewidth=3, linecolor=:tomato,
   xlabel="proportion water", label="Density")
@@ -179,7 +184,7 @@ plot!(x_values, y_values, linestyle=:dash, linewidth=3, color=:black,
   label="Beta(7, 4)")
 ```
 
-**Code 2.12**
+### Code 2.12 
 ```{julia}
 density(post_samples, linewidth=3, linecolor=:tomato,
   bandwidth=.005, # smaller bandwith -> more wiggly
@@ -192,7 +197,7 @@ plot!(x_values, y_values, linestyle=:dash, linewidth=3, color=:black,
   label="Beta(7, 4)")
 ```
 
-**Code 2.13**
+### Code 2.13 
 
 Need to define the `precis` function.
 
@@ -244,7 +249,7 @@ end
 precis( post_samples )
 ```
 
-**Code 2.14**
+### Code 2.14 
 
 ```{julia}
 density(post_samples, linewidth=3, linecolor=:tomato,
@@ -261,13 +266,13 @@ bb = pdf(Beta(7,4), pp)
 bar!(pp, bb, bar_width=.005, fillcolor=:black, linecolor=nothing)
 ```
 
-**Code 2.15**
+### Code 2.15 
 
 ```{julia}
 sample(["W", "L"], AnalyticWeights([.7,.3]), 9, replace=true)
 ```
 
-**Code 2.16**
+### Code 2.16 
 
 ```{julia}
 function sim_globe(p = 0.7, N = 9)
@@ -275,19 +280,19 @@ function sim_globe(p = 0.7, N = 9)
 end
 ```
 
-**Code 2.17**
+### Code 2.17 
 
 ```{julia}
 sim_globe(0.1, 10)
 ```
 
-**Code 2.18**
+### Code 2.18 
 
 ```{julia}
 pred_01 = [ sum(sim_globe(0.1, 10) .== "W") for _ in 1:10000 ];
 ```
 
-**Code 2.19**
+### Code 2.19 
 
 ```{julia}
 bar( sort( countmap( pred_01 ) ), linecolor=nothing, bar_width=.25,
@@ -305,7 +310,7 @@ plot2 = bar( sort( countmap( pred_60 ) ),
 plot(plot1, plot2, layout=(1,2), xlabel="number of W", ylabel="count" )
 ```
 
-**Code 2.20**
+### Code 2.20 
 
 ```{julia}
 p = .64
@@ -319,7 +324,7 @@ tab_post = sort(countmap(pred_post));
 bar!( tab_post, fillcolor=:steelblue2, linecolor=nothing, bar_width=.125)
 ```
 
-**Code 2.21**
+### Code 2.21 
 
 ```{julia}
 function sim_globe2( p=0.7, N=9 , x=0.1 )
@@ -333,7 +338,7 @@ end
 ```
 
 
-**Code 2.22**
+### Code 2.22 
 
 ```{julia}
 # code for the normalizing constant
@@ -368,7 +373,7 @@ y_values = misclass_post.(x_values, xe, W, L)
 plot!(x_values, y_values, linewidth=3, color=:red)
 ```
 
-**Code 2.23**
+### Code 2.23 
 
 ```{julia}
 
