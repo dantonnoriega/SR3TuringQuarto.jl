@@ -1,3 +1,34 @@
+project:
+  type: website
+  resources:
+    - "css/"
+    - "js/"
+    - "*.html"
+  output-dir: docs
+  render:
+    - "notebooks/*.qmd"
+
+website:
+  title: "SR3TuringQuarto.jl"
+  page-footer: "☕️ made with ❤️ by danton." 
+  navbar:
+    search: true
+    tools:
+      - icon: globe
+        url: http://danton.codes
+      - icon: github
+        text: Source
+        url: https://github.com/dantonnoriega/SR3TuringQuarto.jl
+    left:
+      - text: "Home"
+        file: index.qmd
+      - text: "Notebooks"
+        file: notebooks.qmd
+
 format:
   html:
-    embed-resources: true
+    theme: 
+      light: minty
+      dark: darkly
+    toc: true
+    css: styles.css

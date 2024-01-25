@@ -12,6 +12,7 @@ using StatsPlots
 using StatsBase
 using DataFrames
 using Distributions
+using SpecialFunctions
 
 default(
   labels=false, fontfamily="sans-serif", titlefontsize=10, labelfontsize=8,

@@ -1,0 +1,7 @@
+---
+title: "Notebooks"
+listing:
+  type: default
+  contents:
+    - "notebooks/*.qmd"
+---

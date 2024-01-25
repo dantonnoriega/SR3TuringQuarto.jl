@@ -4,3 +4,4 @@
 *.tex
 /.quarto/
 notebooks/*.html
+/_site/
