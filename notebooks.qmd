@@ -1,8 +1,0 @@
----
-title: "Notebooks"
-listing:
-  type: default
-  fields: [title]
-  contents:
-    - "notebooks/*.qmd"
----
