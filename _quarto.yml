@@ -27,5 +27,4 @@ format:
     theme: 
       light: minty
       dark: darkly
-    toc: true
     css: styles.css
