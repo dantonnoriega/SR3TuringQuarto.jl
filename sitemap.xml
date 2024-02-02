@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://dantonnoriega.github.io/SR3TuringQuarto.jl/notebooks/Chapter 02 - Small Worlds and Large Worlds.html</loc>
-    <lastmod>2024-01-25T10:14:09.603Z</lastmod>
-  </url>
-  <url>
-    <loc>https://dantonnoriega.github.io/SR3TuringQuarto.jl/index.html</loc>
-    <lastmod>2024-01-25T09:28:56.730Z</lastmod>
+    <loc>https://dantonnoriega.github.io/SR3TuringQuarto.jl/notebooks/Chapter 03 - Geocentric Models.html</loc>
+    <lastmod>2024-02-02T07:24:10.119Z</lastmod>
   </url>
   <url>
     <loc>https://dantonnoriega.github.io/SR3TuringQuarto.jl/notebooks.html</loc>
     <lastmod>2024-01-25T10:10:01.470Z</lastmod>
+  </url>
+  <url>
+    <loc>https://dantonnoriega.github.io/SR3TuringQuarto.jl/index.html</loc>
+    <lastmod>2024-02-02T07:21:08.225Z</lastmod>
+  </url>
+  <url>
+    <loc>https://dantonnoriega.github.io/SR3TuringQuarto.jl/notebooks/Chapter 02 - Small Worlds and Large Worlds.html</loc>
+    <lastmod>2024-02-02T07:24:07.515Z</lastmod>
   </url>
 </urlset>
