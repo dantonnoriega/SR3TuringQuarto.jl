@@ -28,6 +28,7 @@ default(
 pos = [ sum(rand(Uniform(-1,1), 16)) for _ in 1:1000 ];
 ```
 
+### Fig 3.2
 ```{julia}
 # NOT IN BOOK
 ## ATTEMPT TO REPLICATE FIG 3.2
