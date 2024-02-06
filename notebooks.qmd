@@ -1,0 +1,8 @@
+---
+title: "Notebooks"
+listing:
+  type: default
+  fields: [date, author, title]
+  contents:
+    - "notebooks/*.qmd"
+---
