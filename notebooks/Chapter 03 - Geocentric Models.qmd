@@ -130,7 +130,8 @@ function compute_post(W, H, a, b, sigma, prior=1)
   post = exp.(post .- log_sum_exp(post))
   # SOURCE
   # https://discourse.julialang.org/t/how-to-convert-vector-of-vectors-to-matrix/72609/27
-  hcat(stack(G, dims=1), post)
+  mat = hcat(stack(G, dims=1), post)
+  NamedArray(round.(mat', digits=3), (["a", "b", "sigma", "post"], 1:length(beta_seq)), ("vars","elem"))
 end
 ```
 
@@ -138,12 +139,109 @@ end
 # code 3.6
 beta_seq = collect(0:.1:1)
 post = compute_post(W,H,0,beta_seq,10)
-NamedArray(round.(post', digits=3), (["a", "b", "sigma", "post"], 1:length(beta_seq)), ("vars","elem"))
 ```
 
 ### Code 3.7
 
 ```{julia}
-bar(beta_seq, post[:,4], xlabel="beta", ylabel="posterior probability")
+# need to convert named array to vector using vec()
+bar(beta_seq, vec(post["post",:]), xlabel="beta", ylabel="posterior probability")
+```
+
+### Code 3.8
+
+```{julia}
+n = 101
+beta_seq = collect(range(0,1,length=n))
+post = vec(compute_post(W,H,0,beta_seq,10)["post", :])
+
+plot(H, W, xlim=(130,170), ylim=(50,90), xlabel="height (cm)", 
+     ylabel="weight (kg)", color=:blue, linewidth=3)
+
+for j in 1:n
+    slope = beta_seq[j]
+    lwd = 5*post[j]/maximum(post)
+    Plots.abline!(slope, 0, line=:solid, width=lwd, color=:black,
+                  linealpha=.6) 
+end
+
+scatter!(H, W, markersize=4, markerstrokecolor=:red,
+         markeralpha=.9, markercolor=:white, markerstrokewidth=4)
+title!("N = 1")
+```
+
+### Code 3.9
+
+```{julia}
+# append a new observation to H and W
+H_new = rand(Uniform(130,170), 1)
+W_new = sim_weight( H_new , 0.5 , 10 )
+H = vcat(H,H_new)
+W = vcat(W,W_new)
+# recompute posterior
+post = vec(compute_post(W,H,0,beta_seq,10)["post", :])
+
+# initialize empty plot
+plot(xlim=(130,170), ylim=(50,90), xlabel="height (cm)", ylabel="weight (kg)")
+
+for j in 1:n
+    slope = beta_seq[j]
+    lwd = 5*post[j]/maximum(post)
+    Plots.abline!(slope, 0, line=:solid, width=lwd, color=:black,
+                  linealpha=.6) 
+end
+
+scatter!(H, W, markersize=4, markerstrokecolor=:red,
+         markeralpha=.9, markercolor=:white, markerstrokewidth=4)
+title!(string("N = ", length(W)))
+
+```
+
+### Fig 3.3
+
+```{julia}
+
+# create an array of arrays (ragged_array)
+Random.seed!(94);
+n = 101
+beta_seq = collect(range(0,1,length=n));
+H = rand(Uniform(130, 170), 1);
+W = sim_weight(H, 0.5, 10);
+# initialize empty arrays
+HH = []
+WW = []
+# add first observation to HH and WW
+push!(HH, H)
+push!(WW, W)
+for j in 2:n
+  H_new = rand(Uniform(130,170), 1)
+  W_new = sim_weight( H_new , 0.5 , 10 )
+  push!(HH, vcat(HH[j-1],H_new))
+  push!(WW, vcat(WW[j-1],W_new))
+end
+# recompute posterior
+PP = [ vec(compute_post(WW[i],HH[i],0,beta_seq,10)["post", :]) for i in 1:n ]; 
+
+# initialize empty plots
+plots = Plots.Plot[plot(title="N = $i") for i in 1:n]
+for i in 1:n
+  p = plot(xlim=(130,170), ylim=(50,90), 
+           xlabel="height (cm)", ylabel="weight (kg)",
+           title=string("N = ", i))
+  for j in 1:n
+    slope = beta_seq[j]
+    lwd = 4*PP[i][j]/maximum(PP[i])
+    p = Plots.abline!(p, slope, 0, line=:solid, width=lwd, color=:black,
+                  linealpha=.8) 
+  end
+  plots[i] = scatter!(p, HH[i], WW[i], 
+          markercolor=:white, markersize=4, markeralpha=.8,
+          markerstrokecolor=:red, markerstrokewidth=2)
+end
+
+# plot grid
+plot(plots[1], plots[2], plots[3], plots[10], plots[20], plots[89], 
+    layout=(3,2), size = (800,1200))
+
 ```
 

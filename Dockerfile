@@ -32,9 +32,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install quarto CLI
 ## SOURCE: https://andresrcs.rbind.io/2022/12/09/quarto_arm64/
-RUN wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.4.549/quarto-1.4.549-linux-arm64.deb
-RUN dpkg -i quarto-1.4.549-linux-arm64.deb
-RUN rm /workspace/quarto-1.4.549-linux-arm64.deb
+RUN wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.4.550/quarto-1.4.550-linux-arm64.deb
+RUN dpkg -i quarto-1.4.550-linux-arm64.deb
+RUN rm /workspace/quarto-1.4.550-linux-arm64.deb
 
 
 # Install Python 3 and Jupyter
