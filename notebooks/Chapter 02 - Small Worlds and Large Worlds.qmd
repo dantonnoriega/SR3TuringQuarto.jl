@@ -143,7 +143,7 @@ plot(
 
 # Create a 3x3 array to store individual plots
 n = length(the_sample)
-plots = Plots.Plot[plot(title="Plot $i") for i in 1:n]
+plots = Plots.Plot[plot() for i in 1:n]
 
 # iterate through the sample one at a time, keeping a vector prior obs
 for i in 1:n
@@ -318,8 +318,8 @@ plot(plot1, plot2, layout=(1,2), xlabel="number of W", ylabel="count" )
 ```{julia}
 p = .64
 pred_64 = [ sum(sim_globe(0.64, 10) .== "W") for _ in 1:10000 ];
-bar( sort( countmap( pred_64 ) ), fillcolor=:black, linecolor=nothing, bar_width=.25,
-     xlabel="number of W", ylabel="count", title="p=0.64")
+bar( sort( countmap( pred_64 ) ), fillcolor=:black, linecolor=nothing, 
+     bar_width=.25, xlabel="number of W", ylabel="count", title="p=0.64")
 
 post_samples = rand(Beta(6+1, 3+1), 10000);
 pred_post = [ sum( sim_globe(p, 10) .== "W" ) for p in post_samples];
