@@ -118,3 +118,44 @@ After satisfying the **Local Run Requirements** above, you should be able to run
     activate .
     instantiate
     ```
+
+## Building and Publishing the Site
+
+Render the site locally:
+
+``` sh
+quarto render
+```
+
+Publish to GitHub Pages (builds and pushes to the `gh-pages` branch):
+
+``` sh
+quarto publish gh-pages
+```
+
+The live site is at <https://dantonnoriega.github.io/SR3TuringQuarto.jl/>.
+
+### Adding a new notebook
+
+1. Add a `.qmd` file to `notebooks/`
+2. Add it to `notebooks.qmd` so it appears in the site nav
+3. Run `quarto publish gh-pages`
+
+## Maintaining the Docker Image
+
+When updating Julia or Quarto versions in `Dockerfile`:
+
+1. Update the versions in `Dockerfile`
+2. Regenerate `Manifest.toml` for the new Julia version (run locally):
+
+``` sh
+julia --project=. -e "using Pkg; Pkg.update()"
+```
+
+3. Commit the updated `Manifest.toml`
+4. Rebuild and push the image:
+
+``` sh
+docker build -t dantonnoriega/sr3-turing-quarto-jl .
+docker push dantonnoriega/sr3-turing-quarto-jl:latest
+```

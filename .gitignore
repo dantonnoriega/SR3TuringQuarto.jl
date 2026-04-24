@@ -6,3 +6,4 @@
 notebooks/*.html
 /_site/
 homework/stat_rethinking_2024_pdfs/*
+*.pdf

@@ -1,5 +1,5 @@
 # Use the official Julia image
-FROM julia:1.10.0
+FROM julia:1.12.6
 
 LABEL maintainer="Danton Noriega-Goodwin <github.com/dantonnoriega>"
 LABEL description="This is the image for https://github.com/dantonnoriega/SR3TuringQuarto.jl"
@@ -32,9 +32,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install quarto CLI
 ## SOURCE: https://andresrcs.rbind.io/2022/12/09/quarto_arm64/
-RUN wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.4.549/quarto-1.4.549-linux-arm64.deb
-RUN dpkg -i quarto-1.4.549-linux-arm64.deb
-RUN rm /workspace/quarto-1.4.549-linux-arm64.deb
+RUN wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.9.37/quarto-1.9.37-linux-arm64.deb
+RUN dpkg -i quarto-1.9.37-linux-arm64.deb
+RUN rm /workspace/quarto-1.9.37-linux-arm64.deb
 
 
 # Install Python 3 and Jupyter
